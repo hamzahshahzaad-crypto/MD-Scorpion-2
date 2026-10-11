@@ -1,0 +1,356 @@
+<!DOCTYPE html> <htm
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD Scorpion - Official Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        scorpion: {
+                            50: '#fff1f2',
+                            500: '#e11d48',
+                            600: '#be123c',
+                            900: '#4c0519',
+                            accent: '#f43f5e',
+                            neon: '#fb7185'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px -5px rgba(225, 29, 72, 0.4);
+        }
+        .glow-effect-subtle {
+            box-shadow: 0 0 15px -3px rgba(225, 29, 72, 0.2);
+        }
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(225, 29, 72, 0.15) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 light:bg-slate-50 light:text-slate-800">
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800 dark:border-slate-800 light:border-slate-200 bg-slate-900/80 dark:bg-slate-900/80 light:bg-white/80 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-scorpion-600 to-rose-400 flex items-center justify-center text-white font-bold text-xl shadow-lg glow-effect-subtle">
+                    <i class="fa-solid font-bold fa-bug"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-wide bg-gradient-to-r from-rose-400 via-rose-500 to-amber-400 bg-clip-text text-transparent">
+                        MD SCORPION
+                    </h1>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Official Session Generator</p>
+                </div>
+            </div>
+            <!-- Header Right: Dark/Light Mode & Status -->
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Servers Operational
+                </div>
+                <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-xl border border-slate-700 dark:border-slate-700 light:border-slate-300 bg-slate-800 dark:bg-slate-800 light:bg-slate-100 text-slate-300 dark:text-slate-300 light:text-slate-600 hover:text-white transition-all">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 bg-grid-pattern">
+        
+        <!-- Hero Section -->
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <span class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-scorpion-500/10 text-scorpion-accent border border-scorpion-500/20 inline-block mb-3">
+                v3.5.0 • High-Speed Session Pairing
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+                Connect Your Session securely
+            </h2>
+            <p class="text-slate-400 text-sm sm:text-base">
+                Select an active deployment node, provide your primary mobile number, and generate an instant 8-digit authorization pair code.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Pair Code Form Card (Left/Main Column) -->
+            <div class="lg:col-span-7 bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border border-slate-800 dark:border-slate-800 light:border-slate-200 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur-xl">
+                <!-- Decorative background glow -->
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-scorpion-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <form id="pairForm" onsubmit="handleGenerateCode(event)" class="space-y-6">
+                    
+                    <!-- Server Selection Dropdown -->
+                    <div>
+                        <label for="serverSelect" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center justify-between">
+                            <span><i class="fa-solid fa-server text-scorpion-accent mr-1.5"></i> Deployment Server</span>
+                            <span class="text-[11px] text-emerald-400 font-normal"><i class="fa-solid fa-bolt mr-1"></i>Low Latency</span>
+                        </label>
+                        <select id="serverSelect" class="w-full bg-slate-800 dark:bg-slate-800 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-4 py-3 text-slate-200 dark:text-slate-200 light:text-slate-800 focus:outline-none focus:ring-2 focus:ring-scorpion-accent transition-all font-medium">
+                            <!-- JS populates Server 1 to Server 50 -->
+                        </select>
+                    </div>
+                    <!-- Phone Input Field -->
+                    <div>
+                        <label for="phoneNumber" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                            <i class="fa-solid fa-phone text-scorpion-accent mr-1.5"></i> Phone Number (With Country Code)
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-sm">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <input 
+                                type="tel" 
+                                id="phoneNumber" 
+                                placeholder="e.g. 923001234567 or 14155552671" 
+                                required
+                                pattern="^[0-9]{8,15}$"
+                                class="w-full bg-slate-800 dark:bg-slate-800 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-200 dark:text-slate-200 light:text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-scorpion-accent transition-all font-medium"
+                            />
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-1.5">Include full country code without '+' or spaces (e.g., 923... or 141...)</p>
+                    </div>
+                    <!-- Submit Action Button -->
+                    <button 
+                        type="submit" 
+                        id="submitBtn" 
+                        class="w-full bg-gradient-to-r from-scorpion-600 via-rose-600 to-scorpion-500 hover:from-scorpion-500 hover:to-rose-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg glow-effect transition-all transform active:scale-[0.99] flex items-center justify-center gap-2"
+                    >
+                        <span id="btnText">Get Pair Code</span>
+                        <i id="btnIcon" class="fa-solid fa-arrow-right text-sm"></i>
+                    </button>
+                </form>
+                <!-- Result Display Area -->
+                <div id="resultBox" class="mt-8 pt-6 border-t border-slate-800 dark:border-slate-800 light:border-slate-200 hidden">
+                    <div class="text-center">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">Your Generated Pair Code</span>
+                        
+                        <!-- Pair Code Display Box -->
+                        <div class="bg-slate-950 dark:bg-slate-950 light:bg-slate-100 border border-scorpion-500/40 rounded-xl p-4 flex items-center justify-between gap-4 max-w-sm mx-auto shadow-inner">
+                            <span id="pairCodeDisplay" class="font-mono text-2xl sm:text-3xl font-extrabold tracking-widest text-rose-400 dark:text-rose-400 light:text-rose-600">
+                                --------
+                            </span>
+                            <button 
+                                onclick="copyPairCode()" 
+                                id="copyBtn"
+                                class="bg-slate-800 hover:bg-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 light:bg-slate-200 light:hover:bg-slate-300 text-slate-200 dark:text-slate-200 light:text-slate-800 p-2.5 rounded-lg border border-slate-700 dark:border-slate-700 light:border-slate-300 transition-all flex items-center justify-center gap-1 text-xs font-semibold"
+                                title="Copy to clipboard"
+                            >
+                                <i class="fa-solid fa-copy text-sm"></i>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                        <p class="text-xs text-amber-400/90 mt-3 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-clock"></i> Code expires in 60 seconds
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Step-by-Step Instructions Column (Right) -->
+            <div class="lg:col-span-5 space-y-4">
+                <div class="bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border border-slate-800 dark:border-slate-800 light:border-slate-200 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-scorpion-accent"></i> Pairing Instructions
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="p-3.5 rounded-xl bg-slate-800/60 dark:bg-slate-800/60 light:bg-slate-100 border border-slate-700/50 dark:border-slate-700/50 light:border-slate-200 flex gap-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-scorpion-500/20 text-scorpion-accent font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</div>
+                            <div class="text-xs leading-relaxed text-slate-300 dark:text-slate-300 light:text-slate-600">
+                                Open <strong>WhatsApp</strong> on your mobile phone.
+                            </div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-slate-800/60 dark:bg-slate-800/60 light:bg-slate-100 border border-slate-700/50 dark:border-slate-700/50 light:border-slate-200 flex gap-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-scorpion-500/20 text-scorpion-accent font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</div>
+                            <div class="text-xs leading-relaxed text-slate-300 dark:text-slate-300 light:text-slate-600">
+                                Tap <strong>Settings</strong> or the <strong>Three Dots (⋮)</strong> menu in the top right.
+                            </div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-slate-800/60 dark:bg-slate-800/60 light:bg-slate-100 border border-slate-700/50 dark:border-slate-700/50 light:border-slate-200 flex gap-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-scorpion-500/20 text-scorpion-accent font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">3</div>
+                            <div class="text-xs leading-relaxed text-slate-300 dark:text-slate-300 light:text-slate-600">
+                                Select <strong>Linked Devices</strong> &rarr; <strong>Link a Device</strong>.
+                            </div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-slate-800/60 dark:bg-slate-800/60 light:bg-slate-100 border border-slate-700/50 dark:border-slate-700/50 light:border-slate-200 flex gap-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-scorpion-500/20 text-scorpion-accent font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">4</div>
+                            <div class="text-xs leading-relaxed text-slate-300 dark:text-slate-300 light:text-slate-600">
+                                Choose <strong>"Link with phone number instead"</strong> at the bottom of the screen.
+                            </div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-slate-800/60 dark:bg-slate-800/60 light:bg-slate-100 border border-slate-700/50 dark:border-slate-700/50 light:border-slate-200 flex gap-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-scorpion-500/20 text-scorpion-accent font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">5</div>
+                            <div class="text-xs leading-relaxed text-slate-300 dark:text-slate-300 light:text-slate-600">
+                                Enter the 8-character code displayed above to complete pairing.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FAQ Section -->
+        <section class="mt-16 max-w-4xl mx-auto">
+            <h3 class="text-xl font-bold mb-6 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-circle-question text-scorpion-accent"></i> Frequently Asked Questions
+            </h3>
+            <div class="space-y-4">
+                
+                <details class="group bg-slate-900/80 dark:bg-slate-900/80 light:bg-white border border-slate-800 dark:border-slate-800 light:border-slate-200 rounded-xl p-4 [&_summary::-webkit-details-marker]:none">
+                    <summary class="flex items-center justify-between cursor-pointer font-semibold text-sm">
+                        <span>What is MD Scorpion Pair Code?</span>
+                        <span class="transition group-open:rotate-180">
+                            <i class="fa-solid fa-chevron-down text-slate-400 text-xs"></i>
+                        </span>
+                    </summary>
+                    <p class="mt-3 text-xs leading-relaxed text-slate-400 border-t border-slate-800/60 dark:border-slate-800/60 light:border-slate-200 pt-3">
+                        The pair code is a temporary 8-character authorization key generated to establish multi-device connectivity without requiring camera QR code scanning.
+                    </p>
+                </details>
+                <details class="group bg-slate-900/80 dark:bg-slate-900/80 light:bg-white border border-slate-800 dark:border-slate-800 light:border-slate-200 rounded-xl p-4 [&_summary::-webkit-details-marker]:none">
+                    <summary class="flex items-center justify-between cursor-pointer font-semibold text-sm">
+                        <span>Why does the pairing code expire?</span>
+                        <span class="transition group-open:rotate-180">
+                            <i class="fa-solid fa-chevron-down text-slate-400 text-xs"></i>
+                        </span>
+                    </summary>
+                    <p class="mt-3 text-xs leading-relaxed text-slate-400 border-t border-slate-800/60 dark:border-slate-800/60 light:border-slate-200 pt-3">
+                        For security reasons, generated pair codes remain valid for approximately 60 seconds before timing out. If expired, simply generate a new code.
+                    </p>
+                </details>
+                <details class="group bg-slate-900/80 dark:bg-slate-900/80 light:bg-white border border-slate-800 dark:border-slate-800 light:border-slate-200 rounded-xl p-4 [&_summary::-webkit-details-marker]:none">
+                    <summary class="flex items-center justify-between cursor-pointer font-semibold text-sm">
+                        <span>Which server should I choose?</span>
+                        <span class="transition group-open:rotate-180">
+                            <i class="fa-solid fa-chevron-down text-slate-400 text-xs"></i>
+                        </span>
+                    </summary>
+                    <p class="mt-3 text-xs leading-relaxed text-slate-400 border-t border-slate-800/60 dark:border-slate-800/60 light:border-slate-200 pt-3">
+                        You can select any active server from Server 1 to Server 50. If one server is slow or experiencing heavy traffic, switch to another node.
+                    </p>
+                </details>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 dark:border-slate-800 light:border-slate-200 bg-slate-900/50 dark:bg-slate-900/50 light:bg-slate-100 py-6 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
+            <p>&copy; 2026 MD Scorpion Official. All rights reserved.</p>
+            <p class="max-w-xl mx-auto text-[11px] text-slate-600">
+                Disclaimer: This UI is a web interface demonstration portal. MD Scorpion is an independent developer project and is not affiliated with or endorsed by any third-party messaging services.
+            </p>
+        </div>
+    </footer>
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-800 text-white px-4 py-3 rounded-xl border border-slate-700 shadow-2xl flex items-center gap-3 z-50">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMsg" class="text-xs font-medium">Notification message</span>
+    </div>
+    <!-- JavaScript Logic -->
+    <script>
+        // Populate Server Options (Server 1 to Server 50)
+        document.addEventListener("DOMContentLoaded", () => {
+            const serverSelect = document.getElementById("serverSelect");
+            for (let i = 1; i <= 50; i++) {
+                const opt = document.createElement("option");
+                opt.value = `server_${i}`;
+                opt.textContent = `Server ${i} ${i === 1 ? '(Default • Fast)' : ''}`;
+                serverSelect.appendChild(opt);
+            }
+        });
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById("themeIcon");
+            if (html.classList.contains("dark")) {
+                html.classList.remove("dark");
+                html.classList.add("light");
+                themeIcon.className = "fa-solid fa-sun text-amber-500";
+            } else {
+                html.classList.remove("light");
+                html.classList.add("dark");
+                themeIcon.className = "fa-solid fa-moon";
+            }
+        }
+        // Form Submit Simulation
+        function handleGenerateCode(event) {
+            event.preventDefault();
+            
+            const btnText = document.getElementById("btnText");
+            const btnIcon = document.getElementById("btnIcon");
+            const submitBtn = document.getElementById("submitBtn");
+            const resultBox = document.getElementById("resultBox");
+            const pairCodeDisplay = document.getElementById("pairCodeDisplay");
+            // Disable button and show spinner
+            submitBtn.disabled = true;
+            btnText.textContent = "Connecting to Server...";
+            btnIcon.className = "fa-solid fa-spinner fa-spin text-sm";
+            setTimeout(() => {
+                // Generate random 8-character pair code (e.g. SCOR-89X3)
+                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                let part1 = "", part2 = "";
+                for (let i = 0; i < 4; i++) part1 += chars.charAt(Math.floor(Math.random() * chars.length));
+                for (let i = 0; i < 4; i++) part2 += chars.charAt(Math.floor(Math.random() * chars.length));
+                
+                const generatedCode = `${part1}-${part2}`;
+                pairCodeDisplay.textContent = generatedCode;
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.textContent = "Regenerate Code";
+                btnIcon.className = "fa-solid fa-rotate-right text-sm";
+                // Show result box
+                resultBox.classList.remove("hidden");
+                
+                showToast("Pair code generated successfully!", "success");
+            }, 1800);
+        }
+        // Copy Code Functionality
+        function copyPairCode() {
+            const codeText = document.getElementById("pairCodeDisplay").textContent.trim();
+            if (codeText === "--------") return;
+            // Copy utilizing fallback/execCommand support
+            const tempInput = document.createElement("input");
+            tempInput.value = codeText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast("Pair code copied to clipboard!", "success");
+        }
+        // Toast Feedback Helper
+        function showToast(msg, type = "success") {
+            const toast = document.getElementById("toast");
+            const toastMsg = document.getElementById("toastMsg");
+            const toastIcon = document.getElementById("toastIcon");
+            toastMsg.textContent = msg;
+            
+            if (type === "success") {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-exclamation text-rose-400";
+            }
+            toast.classList.remove("translate-y-20", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
+            setTimeout(() => {
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-20", "opacity-0");
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
